@@ -1,0 +1,77 @@
+# Hash Table using Chaining (size = 10)
+
+class HashTable:
+    def __init__(self):
+        self.size = 10
+        self.table = [[] for _ in range(self.size)]  # list of lists
+
+    # Hash function (division method)
+    def hash_func(self, key):
+        return key % self.size
+
+    # Insert key-value
+    def insert(self, key, value):
+        h = self.hash_func(key)
+        for pair in self.table[h]:
+            if pair[0] == key:
+                pair[1] = value
+                print("Updated existing key.")
+                return
+        self.table[h].append([key, value])
+        print("Inserted.")
+
+    # Search by key
+    def search(self, key):
+        h = self.hash_func(key)
+        for pair in self.table[h]:
+            if pair[0] == key:
+                print("Found:", pair[1])
+                return
+        print("Key not found.")
+
+    # Delete by key
+    def delete(self, key):
+        h = self.hash_func(key)
+        for pair in self.table[h]:
+            if pair[0] == key:
+                self.table[h].remove(pair)
+                print("Deleted.")
+                return
+        print("Key not found.")
+
+    # Display hash table
+    def display(self):
+        for i in range(self.size):
+            print(i, ":", self.table[i])
+
+
+# ---------------- MAIN MENU ----------------
+
+h = HashTable()
+
+while True:
+    print("\n1.Insert  2.Search  3.Delete  4.Display  5.Exit")
+    ch = int(input("Enter choice: "))
+
+    if ch == 1:
+        k = int(input("Enter key: "))
+        v = input("Enter value: ")
+        h.insert(k, v)
+
+    elif ch == 2:
+        k = int(input("Enter key to search: "))
+        h.search(k)
+
+    elif ch == 3:
+        k = int(input("Enter key to delete: "))
+        h.delete(k)
+
+    elif ch == 4:
+        h.display()
+
+    elif ch == 5:
+        print("Exit...")
+        break
+
+    else:
+        print("Invalid choice!")
