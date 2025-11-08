@@ -1,69 +1,53 @@
-#include <stdio.h>
-#include <stdlib.h>
+class Graph:
+    def __init__(s, n):
+        s.n = n
+        s.node = [chr(65+i) for i in range(n)]
+        s.mat = [[0]*n for _ in range(n)]
+        s.lst = [[] for _ in range(n)]
 
-#define V 4  // Number of locations (A, B, C, D)
+    def add(s, u, v):
+        i, j = ord(u)-65, ord(v)-65
+        s.mat[i][j] = s.mat[j][i] = 1
+        s.lst[i] += [v]
+        s.lst[j] += [u]
 
-// ----- DFS using Adjacency Matrix -----
-int visited[V];
-int graph[V][V] = {
-    {0,1,1,0},  // A connected to B, C
-    {1,0,0,1},  // B connected to A, D
-    {1,0,0,1},  // C connected to A, D
-    {0,1,1,0}   // D connected to B, C
-};
+    def dfs(s, st):
+        vis = [0]*s.n
+        print("DFS:")
+        s._dfs(ord(st)-65, vis)
 
-void DFS(int node) {
-    visited[node] = 1;
-    printf("%c ", node + 'A');
-    for (int i = 0; i < V; i++)
-        if (graph[node][i] && !visited[i])
-            DFS(i);
-}
+    def _dfs(s, v, vis):
+        vis[v] = 1
+        print(s.node[v], end=" ")
+        for i in range(s.n):
+            if s.mat[v][i] and not vis[i]:
+                s._dfs(i, vis)
 
-// ----- BFS using Adjacency List -----
-struct Node {
-    int data;
-    struct Node* next;
-};
-struct Node* adj[V];
+    def bfs(s, st):
+        vis = [0]*s.n
+        q = []
+        sidx = ord(st)-65
+        q += [s.node[sidx]]
+        vis[sidx] = 1
+        f = 0
+        print("BFS:")
+        while f < len(q):
+            u = q[f]; f += 1
+            print(u, end=" ")
+            for v in s.lst[ord(u)-65]:
+                if not vis[ord(v)-65]:
+                    q += [v]
+                    vis[ord(v)-65] = 1
 
-void addEdge(int u, int v) {
-    struct Node* new = malloc(sizeof(struct Node));
-    new->data = v;
-    new->next = adj[u];
-    adj[u] = new;
-}
 
-void BFS(int start) {
-    int queue[20], front = 0, rear = 0, visitedB[V] = {0};
-    queue[rear++] = start;
-    visitedB[start] = 1;
+n = int(input("No. of places: "))
+g = Graph(n)
+e = int(input("No. of routes: "))
+for _ in range(e):
+    u, v = input("Route (A B): ").split()
+    g.add(u, v)
 
-    while (front < rear) {
-        int node = queue[front++];
-        printf("%c ", node + 'A');
-        struct Node* temp = adj[node];
-        while (temp) {
-            if (!visitedB[temp->data]) {
-                queue[rear++] = temp->data;
-                visitedB[temp->data] = 1;
-            }
-            temp = temp->next;
-        }
-    }
-}
-
-int main() {
-    // Build adjacency list for BFS
-    addEdge(0,1); addEdge(0,2);
-    addEdge(1,0); addEdge(1,3);
-    addEdge(2,0); addEdge(2,3);
-    addEdge(3,1); addEdge(3,2);
-
-    printf("DFS (Adjacency Matrix) starting from A: ");
-    DFS(0);
-
-    printf("\nBFS (Adjacency List) starting from A: ");
-    BFS(0);
-    return 0;
-}
+st = input("Start from: ")
+g.dfs(st)
+print()
+g.bfs(st)
