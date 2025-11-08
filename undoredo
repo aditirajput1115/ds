@@ -1,0 +1,79 @@
+class Stack:
+    def __init__(self):
+        self.data = []
+        self.top = -1
+
+    def push(self, item):
+        self.top += 1
+        if self.top < len(self.data):
+            self.data[self.top] = item
+        else:
+            self.data += [item]
+
+    def pop(self):
+        if self.top == -1:
+            return None
+        item = self.data[self.top]
+        self.top -= 1
+        return item
+
+    def clear(self):
+        self.data = []
+        self.top = -1
+
+    def is_empty(self):
+        return self.top == -1
+
+
+class TextEditor:
+    def __init__(self):
+        self.doc = ""
+        self.undo = Stack()
+        self.redo = Stack()
+
+    def make_change(self, text):
+        self.undo.push(self.doc)
+        self.redo.clear()
+        self.doc = text
+        self.display()
+
+    def undo_action(self):
+        if self.undo.is_empty():
+            print("Nothing to undo.")
+            return
+        self.redo.push(self.doc)
+        self.doc = self.undo.pop()
+        self.display()
+
+    def redo_action(self):
+        if self.redo.is_empty():
+            print("Nothing to redo.")
+            return
+        self.undo.push(self.doc)
+        self.doc = self.redo.pop()
+        self.display()
+
+    def display(self):
+        print("Current Document:", self.doc)
+
+
+# ---- MENU ----
+t = TextEditor()
+
+while True:
+    print("\n1. Make Change\n2. Undo\n3. Redo\n4. Display\n5. Exit")
+    ch = int(input("Enter choice: "))
+
+    if ch == 1:
+        txt = input("Enter new text: ")
+        t.make_change(txt)
+    elif ch == 2:
+        t.undo_action()
+    elif ch == 3:
+        t.redo_action()
+    elif ch == 4:
+        t.display()
+    elif ch == 5:
+        break
+    else:
+        print("Invalid choice")
