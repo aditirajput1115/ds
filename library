@@ -1,4 +1,3 @@
-# Library Record System
 
 books = ["BookA", "BookB", "BookC", "BookD", "BookE"]
 borrows = [5, 0, 7, 7, 2]
