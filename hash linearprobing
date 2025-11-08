@@ -1,4 +1,3 @@
-# Hash Table using Linear Probing
 
 class Hash:
     def __init__(self, size):
@@ -45,7 +44,6 @@ class Hash:
         for i in range(self.size):
             print(i, ":", self.tab[i])
 
-# -------- MENU --------
 h = Hash(10)
 while True:
     print("\n1.Ins 2.Srch 3.Del 4.Show 5.Exit")
