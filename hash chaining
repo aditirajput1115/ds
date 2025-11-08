@@ -1,15 +1,12 @@
-# Hash Table using Chaining (size = 10)
 
 class HashTable:
     def __init__(self):
         self.size = 10
         self.table = [[] for _ in range(self.size)]  # list of lists
 
-    # Hash function (division method)
     def hash_func(self, key):
         return key % self.size
 
-    # Insert key-value
     def insert(self, key, value):
         h = self.hash_func(key)
         for pair in self.table[h]:
@@ -20,7 +17,6 @@ class HashTable:
         self.table[h].append([key, value])
         print("Inserted.")
 
-    # Search by key
     def search(self, key):
         h = self.hash_func(key)
         for pair in self.table[h]:
@@ -29,7 +25,6 @@ class HashTable:
                 return
         print("Key not found.")
 
-    # Delete by key
     def delete(self, key):
         h = self.hash_func(key)
         for pair in self.table[h]:
@@ -39,13 +34,11 @@ class HashTable:
                 return
         print("Key not found.")
 
-    # Display hash table
     def display(self):
         for i in range(self.size):
             print(i, ":", self.table[i])
 
 
-# ---------------- MAIN MENU ----------------
 
 h = HashTable()
 
