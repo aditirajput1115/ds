@@ -1,0 +1,52 @@
+# Library Record System
+
+books = ["BookA", "BookB", "BookC", "BookD", "BookE"]
+borrows = [5, 0, 7, 7, 2]
+members = [2, 0, 4, 3, 0, 1]
+
+while True:
+    print("\n1.Avg  2.High/Low  3.Zero  4.Mode  5.Exit")
+    ch = int(input("Enter choice: "))
+
+    if ch == 1:
+        total = 0
+        for i in range(len(members)):
+            total += members[i]
+        avg = total / len(members)
+        print("Avg books:", avg)
+
+    elif ch == 2:
+        high = borrows[0]; low = borrows[0]
+        hb = books[0]; lb = books[0]
+        for i in range(1, len(borrows)):
+            if borrows[i] > high:
+                high = borrows[i]; hb = books[i]
+            if borrows[i] < low:
+                low = borrows[i]; lb = books[i]
+        print("High:", hb, high)
+        print("Low :", lb, low)
+
+    elif ch == 3:
+        cnt = 0
+        for i in range(len(members)):
+            if members[i] == 0:
+                cnt += 1
+        print("Zero borrow:", cnt)
+
+    elif ch == 4:
+        maxf = 0; mode = None
+        for i in range(len(borrows)):
+            f = 0
+            for j in range(len(borrows)):
+                if borrows[i] == borrows[j]:
+                    f += 1
+            if f > maxf:
+                maxf = f; mode = borrows[i]
+        print("Mode:", mode)
+
+    elif ch == 5:
+        print("Exit...")
+        break
+
+    else:
+        print("Invalid!")
