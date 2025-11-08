@@ -34,7 +34,6 @@ class Queue:
             print("Queue is not Empty")
 
 
-# ---- MENU ----
 c = Queue()
 while True:
     print("\n1.Add Call 2.Answer Call 3.View Queue 4.Check Empty 5.Exit")
