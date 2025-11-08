@@ -1,0 +1,48 @@
+def selection_sort(salaries):
+    n = len(salaries)
+    for i in range(n):
+        min_index = i
+        for j in range(i + 1, n):
+            if salaries[j] < salaries[min_index]:
+                min_index = j
+        salaries[i], salaries[min_index] = salaries[min_index], salaries[i]
+    return salaries
+
+def bubble_sort(salaries):
+    n = len(salaries)
+    for i in range(n - 1):
+        for j in range(n - 1 - i):
+            if salaries[j] > salaries[j + 1]:
+                salaries[j], salaries[j + 1] = salaries[j + 1], salaries[j]
+    return salaries
+
+def display_top_five(salaries):
+    print("\nTop 5 Highest Salaries in the Company:")
+    top_five = salaries[-5:]  
+    for salary in reversed(top_five):  
+        print(salary)
+
+
+salaries = []
+n = int(input("Enter the number of employees: "))
+
+for i in range(n):
+    salary = float(input(f"Enter salary of employee {i+1}: "))
+    salaries.append(salary)
+
+print("\nOriginal Salaries:", salaries)
+print("\nChoose Sorting Method:")
+print("1. Selection Sort")
+print("2. Bubble Sort")
+choice = int(input("Enter your choice (1 or 2): "))
+
+if choice == 1:
+    sorted_salaries = selection_sort(salaries.copy())
+    print("\nSalaries Sorted using Selection Sort:", sorted_salaries)
+    display_top_five(sorted_salaries)
+elif choice == 2:
+    sorted_salaries = bubble_sort(salaries.copy())
+    print("\nSalaries Sorted using Bubble Sort:", sorted_salaries)
+    display_top_five(sorted_salaries)
+else:
+    print("Invalid choice! Please select either 1 or 2.")
