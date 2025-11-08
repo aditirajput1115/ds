@@ -1,0 +1,64 @@
+# Hash Table using Linear Probing
+
+class Hash:
+    def __init__(self, size):
+        self.size = size
+        self.tab = [None]*size
+
+    def hash_fun(self, key):
+        return key % self.size
+
+    def insert(self, key):
+        h = self.hash_fun(key)
+        for _ in range(self.size):
+            if self.tab[h] in (None, "DEL"):
+                self.tab[h] = key
+                print("Inserted.")
+                return
+            h = (h + 1) % self.size
+        print("Table full!")
+
+    def search(self, key):
+        h = self.hash_fun(key)
+        for _ in range(self.size):
+            if self.tab[h] == key:
+                print("Found at", h)
+                return
+            if self.tab[h] is None:
+                break
+            h = (h + 1) % self.size
+        print("Not found.")
+
+    def delete(self, key):
+        h = self.hash_fun(key)
+        for _ in range(self.size):
+            if self.tab[h] == key:
+                self.tab[h] = "DEL"
+                print("Deleted.")
+                return
+            if self.tab[h] is None:
+                break
+            h = (h + 1) % self.size
+        print("Not found.")
+
+    def show(self):
+        for i in range(self.size):
+            print(i, ":", self.tab[i])
+
+# -------- MENU --------
+h = Hash(10)
+while True:
+    print("\n1.Ins 2.Srch 3.Del 4.Show 5.Exit")
+    c = int(input("Ch: "))
+    if c == 1:
+        h.insert(int(input("Key: ")))
+    elif c == 2:
+        h.search(int(input("Key: ")))
+    elif c == 3:
+        h.delete(int(input("Key: ")))
+    elif c == 4:
+        h.show()
+    elif c == 5:
+        break
+    else:
+        print("Invalid!")
