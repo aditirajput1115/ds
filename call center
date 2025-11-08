@@ -1,0 +1,55 @@
+class Queue:
+    def __init__(self):
+        self.q = []
+        self.front = 0
+        self.rear = -1
+
+    def addCall(self, cid, ctime):
+        self.rear += 1
+        if self.rear < len(self.q):
+            self.q[self.rear] = [cid, ctime]
+        else:
+            self.q += [[cid, ctime]]
+
+    def answerCall(self):
+        if self.front > self.rear:
+            print("No calls to answer.")
+            return
+        call = self.q[self.front]
+        self.front += 1
+        print("Answered Call - ID:", call[0], "Time:", call[1], "min")
+
+    def viewQueue(self):
+        if self.front > self.rear:
+            print("No pending calls.")
+        else:
+            print("Pending Calls:")
+            for i in range(self.front, self.rear + 1):
+                print("Customer ID:", self.q[i][0], "Call Time:", self.q[i][1], "min")
+
+    def isQueueEmpty(self):
+        if self.front > self.rear:
+            print("Queue is Empty")
+        else:
+            print("Queue is not Empty")
+
+
+# ---- MENU ----
+c = Queue()
+while True:
+    print("\n1.Add Call 2.Answer Call 3.View Queue 4.Check Empty 5.Exit")
+    ch = int(input("Enter choice: "))
+    if ch == 1:
+        cid = input("Enter Customer ID: ")
+        ctime = input("Enter Call Time (min): ")
+        c.addCall(cid, ctime)
+    elif ch == 2:
+        c.answerCall()
+    elif ch == 3:
+        c.viewQueue()
+    elif ch == 4:
+        c.isQueueEmpty()
+    elif ch == 5:
+        break
+    else:
+        print("Invalid choice.")
