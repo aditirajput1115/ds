@@ -1,0 +1,77 @@
+class Queue:
+    def __init__(self):
+        self.q = []
+        self.front = 0
+        self.rear = -1
+
+    def enqueue(self, item):
+        self.rear += 1
+        if self.rear < len(self.q):
+            self.q[self.rear] = item
+        else:
+            self.q += [item]
+
+    def dequeue(self):
+        if self.front > self.rear:
+            return None
+        item = self.q[self.front]
+        self.front += 1
+        return item
+
+    def display(self):
+        if self.front > self.rear:
+            print("No pending events")
+        else:
+            for i in range(self.front, self.rear + 1):
+                print(self.q[i])
+
+    def cancel(self, event):
+        found = -1
+        for i in range(self.front, self.rear + 1):
+            if self.q[i] == event:
+                found = i
+                break
+        if found == -1:
+            print("Event not found.")
+            return
+        for j in range(found, self.rear):
+            self.q[j] = self.q[j + 1]
+        self.rear -= 1
+        print("Event canceled.")
+
+
+class EventSystem:
+    def __init__(self):
+        self.queue = Queue()
+
+    def add_event(self):
+        e = input("Enter event: ")
+        self.queue.enqueue(e)
+
+    def process_event(self):
+        e = self.queue.dequeue()
+        if e is None:
+            print("No events to process.")
+        else:
+            print("Processing:", e)
+
+    def display_events(self):
+        print("Pending events:")
+        self.queue.display()
+
+    def cancel_event(self):
+        e = input("Enter event to cancel: ")
+        self.queue.cancel(e)
+
+
+# ---- MENU ----
+sys = EventSystem()
+while True:
+    print("\n1.Add 2.Process 3.Display 4.Cancel 5.Exit")
+    ch = int(input("Enter choice: "))
+    if ch == 1: sys.add_event()
+    elif ch == 2: sys.process_event()
+    elif ch == 3: sys.display_events()
+    elif ch == 4: sys.cancel_event()
+    elif ch == 5: break
+    else: print("Invalid choice")
