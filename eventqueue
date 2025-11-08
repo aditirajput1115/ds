@@ -64,7 +64,6 @@ class EventSystem:
         self.queue.cancel(e)
 
 
-# ---- MENU ----
 sys = EventSystem()
 while True:
     print("\n1.Add 2.Process 3.Display 4.Cancel 5.Exit")
