@@ -1,0 +1,45 @@
+def linear_search(account_ids, target):
+    for i in range(len(account_ids)):
+        if account_ids[i] == target:
+            return f"Account ID {target} found at position {i} using Linear Search."
+    return f"Account ID {target} not found."
+
+def binary_search(account_ids, target):
+    low = 0
+    high = len(account_ids) - 1
+
+    while low <= high:
+        mid = (low + high) // 2
+        if account_ids[mid] == target:
+            return f"Account ID {target} found at position {mid} using Binary Search."
+        elif account_ids[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return f"Account ID {target} not found."
+
+account_ids = []  
+
+n = int(input("Total number of account id: "))
+for i in range(n):
+    acc = int(input(f"Enter Account ID {i+1}: "))
+    account_ids.append(acc)
+
+print("\nAccount IDs entered:", account_ids)
+
+target = int(input("\nEnter the Account ID you want to search for: "))
+
+print("\nChoose Search Method:")
+print("1. Linear Search")
+print("2. Binary Search")
+choice = int(input("Enter your choice (1 or 2): "))
+
+
+if choice == 1:
+    print(linear_search(account_ids, target))
+elif choice == 2:
+    account_ids.sort()
+    print("Sorted Account IDs :", account_ids)
+    print(binary_search(account_ids, target))
+else:
+    print("Invalid choice! Please enter 1 or 2.")
