@@ -1,102 +1,62 @@
-import java.util.Scanner;
-public class LinearProbing {
-    final int SIZE = 10;
-    int ht[]=new int[SIZE];
-        LinearProbing() {
-            for(int i=0;i<SIZE;i++)
-                ht[i]=-1;
-        }
 
-    void insert(int key) {
-        int i=key%SIZE;         
-        while(ht[i]!=-1) {
-            i=(i+1)%SIZE;
-        }
-        ht[i]=key;
-        System.out.println("Inserted!");
-    }
+class Hash:
+    def __init__(self, size):
+        self.size = size
+        self.tab = [None]*size
 
-    void search(int key) {
+    def hash_fun(self, key):
+        return key % self.size
 
-        int i=key%SIZE;
-        int count=0;   
-        while(ht[i]!=-1 && count<SIZE) {
-            if(ht[i]==key) {
-                System.out.println("Found: "+key);
-                return;
-            }
-            i=(i+1)%SIZE;
-            count++;
-        } 
-        System.out.println("Not found!");
-    }
+    def insert(self, key):
+        h = self.hash_fun(key)
+        for _ in range(self.size):
+            if self.tab[h] in (None, "DEL"):
+                self.tab[h] = key
+                print("Inserted.")
+                return
+            h = (h + 1) % self.size
+        print("Table full!")
 
-    void delete(int key) {
-        int i=key%SIZE;
-        int count=0;
-        while(ht[i]!=-1 && count<SIZE) {
-            if(ht[i]==key) {
-                ht[i]=-1;
-                System.out.println("Deleted!");
-                return;
-            }
-            i=(i+1)%SIZE;
-            count++;
-        }
-        System.out.println("Not found!");
-    }
+    def search(self, key):
+        h = self.hash_fun(key)
+        for _ in range(self.size):
+            if self.tab[h] == key:
+                print("Found at", h)
+                return
+            if self.tab[h] is None:
+                break
+            h = (h + 1) % self.size
+        print("Not found.")
 
+    def delete(self, key):
+        h = self.hash_fun(key)
+        for _ in range(self.size):
+            if self.tab[h] == key:
+                self.tab[h] = "DEL"
+                print("Deleted.")
+                return
+            if self.tab[h] is None:
+                break
+            h = (h + 1) % self.size
+        print("Not found.")
 
-    
-    void display() {
-        for(int i=0;i<SIZE;i++) {
-            System.out.print(i+" -> ");
-            if(ht[i]!=-1)
-                System.out.println(ht[i]);
-            else
-                System.out.println("null");
-        }
-    }
+    def show(self):
+        for i in range(self.size):
+            print(i, ":", self.tab[i])
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int choice;
-        LinearProbing lp = new LinearProbing();
-        do {
-            System.out.println("\nLINEAR PROBING HASH TABLE");
-            System.out.println("1. Insert");
-            System.out.println("2. Search");
-            System.out.println("3. Delete");
-            System.out.println("4. Display");
-            System.out.println("5. Exit");
-            System.out.print("Enter your choice: ");
-            choice = sc.nextInt();
-            switch(choice) {
-                case 1:
-                    System.out.print("Enter key to insert: ");
-                    int keyInsert = sc.nextInt();
-                    lp.insert(keyInsert);
-                    break;
-                case 2:
-                    System.out.print("Enter key to search: ");
-                    int keySearch = sc.nextInt();
-                    lp.search(keySearch);
-                    break;
-                case 3:
-                    System.out.print("Enter key to delete: ");
-                    int keyDelete = sc.nextInt();
-                    lp.delete(keyDelete);
-                    break;
-                case 4:
-                    lp.display();
-                    break;
-                case 5:
-                    System.out.println("Exiting...");
-                    break;
-                default:
-                    System.out.println("Invalid choice! Try again.");
-            }
-        } while(choice != 5);
-    }
-
-}
+h = Hash(10)
+while True:
+    print("\n1.Ins 2.Srch 3.Del 4.Show 5.Exit")
+    c = int(input("Ch: "))
+    if c == 1:
+        h.insert(int(input("Key: ")))
+    elif c == 2:
+        h.search(int(input("Key: ")))
+    elif c == 3:
+        h.delete(int(input("Key: ")))
+    elif c == 4:
+        h.show()
+    elif c == 5:
+        break
+    else:
+        print("Invalid!")
