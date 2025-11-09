@@ -1,70 +1,173 @@
+import java.util.*;
 
-class HashTable:
-    def __init__(self):
-        self.size = 10
-        self.table = [[] for _ in range(self.size)]  # list of lists
+// Node class for chaining (linked list)
+class Node {
+    int key;
+    String value;
+    Node next;
 
-    def hash_func(self, key):
-        return key % self.size
+    Node(int key, String value) {
+        this.key = key;
+        this.value = value;
+        this.next = null;
+    }
+}
 
-    def insert(self, key, value):
-        h = self.hash_func(key)
-        for pair in self.table[h]:
-            if pair[0] == key:
-                pair[1] = value
-                print("Updated existing key.")
-                return
-        self.table[h].append([key, value])
-        print("Inserted.")
+// Hash Table class using chaining
+class HashTable {
+    private Node []table;
+    private int size;
 
-    def search(self, key):
-        h = self.hash_func(key)
-        for pair in self.table[h]:
-            if pair[0] == key:
-                print("Found:", pair[1])
-                return
-        print("Key not found.")
+    // Constructor
+    HashTable(int size) {
+        this.size = size;
+        table = new Node[size];
+    }
 
-    def delete(self, key):
-        h = self.hash_func(key)
-        for pair in self.table[h]:
-            if pair[0] == key:
-                self.table[h].remove(pair)
-                print("Deleted.")
-                return
-        print("Key not found.")
+    // Hash function (division method)
+    private int hash(int key) {
+        return key % size;
+        
+    }
 
-    def display(self):
-        for i in range(self.size):
-            print(i, ":", self.table[i])
+    // Insert key-value pair
+    void insert(int key, String value) {
+        int index = hash(key);
+        Node newNode = new Node(key, value);
 
+        if (table[index] == null) {
+            // first node at this index
+            table[index] = newNode;
+        } else {
+            Node current = table[index];
+            Node prev = null;
 
+            while (current != null) {
+                if (current.key == key) {
+                    current.value = value; // update existing key
+                    System.out.println("Value updated for key " + key);
+                    return;
+                }
+                prev = current;
+                current = current.next;
+            }
+            // Add new node at the end of the chain
+            prev.next = newNode;
+        }
+        System.out.println("Inserted (" + key + ", " + value + ") successfully.");
+    }
 
-h = HashTable()
+    // Search a key
+    void search(int key) {
+        int index = hash(key);
+        Node temp = table[index];
 
-while True:
-    print("\n1.Insert  2.Search  3.Delete  4.Display  5.Exit")
-    ch = int(input("Enter choice: "))
+        while (temp != null) {
+            if (temp.key == key) {
+                System.out.println("Key " + key + " found with value: " + temp.value);
+                return;
+            }
+            temp = temp.next;
+        }
+        System.out.println("Key " + key + " not found.");
+    }
 
-    if ch == 1:
-        k = int(input("Enter key: "))
-        v = input("Enter value: ")
-        h.insert(k, v)
+    // Delete a key
+    void delete(int key) {
+        int index = hash(key);
+        Node temp = table[index];
+        Node prev = null;
 
-    elif ch == 2:
-        k = int(input("Enter key to search: "))
-        h.search(k)
+        while (temp != null && temp.key != key) {
+            prev = temp;
+            temp = temp.next;
+        }
 
-    elif ch == 3:
-        k = int(input("Enter key to delete: "))
-        h.delete(k)
+        if (temp == null) {
+            System.out.println("Key " + key + " not found.");
+            return;
+        }
 
-    elif ch == 4:
-        h.display()
+        if (prev == null) {
+            table[index] = temp.next;
+        } else {
+            prev.next = temp.next;
+        }
 
-    elif ch == 5:
-        print("Exit...")
-        break
+        System.out.println("Deleted key " + key + " successfully.");
+    }
 
-    else:
-        print("Invalid choice!")
+    // Display entire hash table
+    void display() {
+        System.out.println("\n===== HASH TABLE =====");
+        for (int i = 0; i < size; i++) {
+            System.out.print(i + " -> ");
+            Node temp = table[i];
+            if (temp == null) {
+                System.out.println("null");
+            } else {
+                while (temp != null) {
+                    System.out.print("(" + temp.key + ", " + temp.value + ") -> ");
+                    temp = temp.next;
+                }
+                System.out.println("null");
+            }
+        }
+    }
+}
+
+// Main class (Menu-driven program)
+public class Chaining {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        HashTable hashTable = new HashTable(10);
+        int choice;
+
+        do {
+            System.out.println("\n===== HASH TABLE MENU =====");
+            System.out.println("1. Insert Key-Value Pair");
+            System.out.println("2. Search Key");
+            System.out.println("3. Delete Key");
+            System.out.println("4. Display Hash Table");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Key (integer): ");
+                    int key = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Enter Value (string): ");
+                    String value = sc.nextLine();
+                    hashTable.insert(key, value);
+                    break;
+
+                case 2:
+                    System.out.print("Enter Key to Search: ");
+                    int searchKey = sc.nextInt();
+                    hashTable.search(searchKey);
+                    break;
+
+                case 3:
+                    System.out.print("Enter Key to Delete: ");
+                    int deleteKey = sc.nextInt();
+                    hashTable.delete(deleteKey);
+                    break;
+
+                case 4:
+                    hashTable.display();
+                    break;
+
+                case 5:
+                    System.out.println("Exiting program...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice! Try again.");
+            }
+
+        } while (choice != 5);
+        sc.close();
+    }
+}
