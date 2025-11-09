@@ -19,7 +19,7 @@ def bubble_sort(salaries):
 def display_top_five(salaries):
     print("\nTop 5 Highest Salaries in the Company:")
     top_five = salaries[-5:]  
-    for salary in reversed(top_five):  
+    for salary in top_five:
         print(salary)
 
 
