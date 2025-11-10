@@ -2,7 +2,7 @@
 class HashTable:
     def __init__(self):
         self.size = 10
-        self.table = [[] for _ in range(self.size)]  # list of lists
+        self.table = [[] for _ in range(self.size)] 
 
     def hash_func(self, key):
         return key % self.size
